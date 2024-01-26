@@ -1,22 +1,27 @@
+from typing import Annotated, TypeAlias
 from pydantic import (
     BaseModel,
     root_validator,
     EmailStr,
     Field,
-    confloat,
-    conint,
     field_validator,
     constr,
 )
 
+AgeInt: TypeAlias = Annotated[int, Field(strict=False, gt=0)]
+# ValidAgeCasted: TypeAlias = Annotated[int, Field(strict=False, gt=0)]
+WeightFloat: TypeAlias = Annotated[float, Field(strict=True, ge=15, le=100)]
+StudentId: TypeAlias = Annotated[str, Field(strict=True, min_length=6, max_length=6)]
+IdStr: TypeAlias = Annotated[str, Field(strict=True, pattern=r"^\d{4}$")]
+
 
 class Student(BaseModel):
-    id: str = Field(pattern=r"^\d{4}$")
+    id: IdStr  # Field(strict=True, pattern=r"^\d{4}$")
     # ^ start of string $ end of string. but it should contain only numbers. len should be 4 digits
-    student_id: constr(strip_whitespace=True, to_upper=True, min_length=6, max_length=6)  # type: ignore
+    student_id: StudentId  # type: ignore
     name: str
-    age: conint(ge=12, le=24)  # type: ignore
-    weight: confloat(ge=15, le=100)  # type: ignore
+    age: AgeInt
+    weight: WeightFloat
     email: EmailStr
     interests: list[str]
 
@@ -32,6 +37,8 @@ class Student(BaseModel):
     def split_interests(cls, value):
         return map(str.upper, value.split(",")) if isinstance(value, str) else value
 
+    # @field_validator()
+
 
 s = Student(
     id="4556",
@@ -42,3 +49,4 @@ s = Student(
     email="santokalayil@gmail.com",
     interests="badminton, cHess, coding",  # type: ignore
 )
+s
