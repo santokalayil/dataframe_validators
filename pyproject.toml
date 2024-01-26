@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "dfvalidator"
+version = "0.1.0"
+description = "Package with utilities to validate and cleanup data in pandas dataframe"
+authors = ["Santo K Thomas <santokalayil@gmail.dom>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pandas = "^2.2.0"
+openpyxl = "^3.1.2"
+pydantic = { version = "^2.5.3", extras = ["email"] }
+pyarrow = "^15.0.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.12.1"
+mypy = "^1.8.0"
+ipykernel = "^6.29.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
